@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Lenker feature-miljø</title>
+        <style>
+            :root {
+                --background-light: #ffffff;
+                --background-dark: #121212;
+                --text-light: #000000;
+                --text-dark: #ffffff;
+                --link-light: #126f87;
+                --link-dark: #58aabb;
+                --button-background-light: #f0f0f0;
+                --button-background-dark: #333333;
+            }
+
+            body {
+                font-family: "Source Sans Pro", Arial, Verdana, sans-serif;
+                margin: 20px;
+                margin-bottom: 600px;
+                background-color: var(--background-light);
+                color: var(--text-light);
+                transition: background-color 0.3s, color 0.3s;
+            }
+
+            body[data-theme="dark"] {
+                background-color: var(--background-dark);
+                color: var(--text-dark);
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .input-group {
+                display: flex;
+                margin: 5px 0;
+            }
+
+            input {
+                max-width: 400px;
+                padding: 10px;
+                flex: 1;
+            }
+
+            button {
+                padding: 10px;
+                margin-left: 5px;
+                background-color: var(--button-background-light);
+                color: var(--text-light);
+                border: none;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            body[data-theme="dark"] button {
+                background-color: var(--button-background-dark);
+                color: var(--text-dark);
+            }
+
+            .links {
+                margin-top: 20px;
+            }
+
+            .link-item {
+                margin-bottom: 10px;
+            }
+
+            a {
+                color: var(--link-light);
+                text-decoration-color: var(--link-light);
+                text-decoration-thickness: .0625rem;
+            }
+
+            body[data-theme="dark"] a {
+                color: var(--link-dark);
+                text-decoration-color: var(--link-dark);
+            }
+
+            .theme-toggle-btn {
+                margin-top: 20px;
+                padding: 10px;
+                background-color: var(--button-background-light);
+                color: var(--text-light);
+                border: none;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            body[data-theme="dark"] .theme-toggle-btn {
+                background-color: var(--button-background-dark);
+                color: var(--text-dark);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Lenker feature-miljø</h1>
+            <div class="input-group">
+                <input type="text" id="envInput" placeholder="Skriv inn miljønavn" onkeydown="if(event.key === 'Enter') generateLinks()" />
+                <button onclick="generateLinks()">Generer lenker</button>
+            </div>
+            <ul class="links" id="linksContainer"></ul>
+            <button class="theme-toggle-btn" onclick="toggleTheme()">Bytt til mørk modus</button>
+        </div>
+
+        <script>
+            // Funksjon for å generere lenker
+            function generateLinks() {
+                const envName = document.getElementById('envInput').value;
+                const linksContainer = document.getElementById('linksContainer');
+                linksContainer.innerHTML = '';
+
+                const linkGroups = [
+                    {
+                        header: 'Helsenorge',
+                        links: [
+                        { url: 'https://tjenester-{env}.int-hn.nhn.no/', label: 'Helsenorge tjenester' },
+                        { url: 'https://tjenester-{env}.int-hn.nhn.no/?pnr=13766991003 ', label: 'Helsenorge tjenester - bakdør (Liten Danser)' },
+                        { url: 'https://tjenester-{env}.int-hn.nhn.no/?pnr=07818198064 ', label: 'Helsenorge tjenester - bakdør (Svær Hjelp)' },
+                        { url: 'https://tjenester-{env}.int-hn.nhn.no/?pnr=21848996774 ', label: 'Helsenorge tjenester - bakdør (UNG POMPØS JORDBÆR)' },
+                        { url: 'https://tjenester-{env}.int-hn.nhn.no/?pnr=30819097751 ', label: 'Helsenorge tjenester - bakdør (Snill Gullmynt)' }
+                        
+                        ]
+                    },
+                    {
+                        header: 'Admin',
+                        links: [
+                        { url: 'https://admin-helsenorge-{env}.int-hn.nhn.no/', label: 'Helsenorge admin' },
+                        { url: 'https://admin-helsenorge-{env}.int-hn.nhn.no/?fnr=07118600295', label: 'Helsenorge admin - bakdør (Anna Fos Eieb)' },
+                        { url: 'https://admin-helsenorge-{env}.int-hn.nhn.no/?fnr=27129396976', label: 'Helsenorge admin - bakdør (Sigfred Bjørn Sperre)' },
+                        { url: 'https://admin-helsenorge-{env}.int-hn.nhn.no/?fnr=05898597468', label: 'Helsenorge admin - bakdør (Grønn Vits)' }
+                        ]
+                    },
+                    {
+                        header: 'Diverse',
+                        links: [
+                        { url: 'https://signonservice-hn-{env}.int-hn.nhn.no/', label: 'SignOnService' },
+                        { url: 'https://static-{env}.int-hn.nhn.no/static_skjemabygger/', label: 'Skjemabygger' }
+                        ]
+                    },
+                    {
+                        header: 'Swagger - tjenester',
+                        links: [
+                        { url: 'https://tjenester-{env}.int-hn.nhn.no/oppgaveinternal/swagger/', label: 'Swagger - tjenester - Oppgave Intern API' },
+                        { url: 'https://tjenester-{env}.int-hn.nhn.no/skjemainternal/swagger/', label: 'Swagger - tjenester - Skjema Intern API' },
+                        { url: 'https://tjenester-{env}.int-hn.nhn.no/verktoynetcore/swagger/', label: 'Swagger - tjenester - Verktøy Intern API' }
+                        ]
+                    },
+                    {
+                        header: 'Swagger - admin',
+                        links: [
+                        { url: 'https://admin-helsenorge-{env}.int-hn.nhn.no/skjemainternal/swagger/', label: 'Swagger - admin - Skjema Intern API' },
+                        { url: 'https://admin-helsenorge-{env}.int-hn.nhn.no/verktoyformidleren/swagger/', label: 'Swagger - admin - Verktøyformidler API' },
+                        { url: 'https://admin-helsenorge-{env}.int-hn.nhn.no/verktoykatalog/swagger/', label: 'Swagger - admin - Verktøykatalog API' }
+                        ]
+                    },
+                    {
+                        header: 'Swagger - ekstern',
+                        links: [
+                        { url: 'https://eksternapi-hn-{env}.int-hn.nhn.no/oppgave/swagger/', label: 'Swagger - ekstern - Oppgave Ekstern API' },
+                        { url: 'https://eksternapi-hn-{env}.int-hn.nhn.no/skjema/swagger/', label: 'Swagger - ekstern - Skjema Ekstern API' },
+                        { url: 'https://eksternapi-hn-{env}.int-hn.nhn.no/smartregister/swagger/', label: 'Swagger - ekstern - SmartRegister Ekstern API' },
+                        { url: 'https://eksternapi-hn-{env}.int-hn.nhn.no/verktoy/swagger/', label: 'Swagger - ekstern - Verktøy Ekstern API' }
+                        ]
+                    },
+                    {
+                        header: 'Ping - tjenester',
+                        links: [
+                        { url: 'https://tjenester-{env}.int-hn.nhn.no/proxy/oppgaveinternal/ping', label: 'Ping - tjenester - Oppgave Intern API' },
+                        { url: 'https://tjenester-{env}.int-hn.nhn.no/proxy/skjemainternal/ping', label: 'Ping - tjenester - Skjema Intern API' },
+                        { url: 'https://tjenester-{env}.int-hn.nhn.no/proxy/verktoynetcore/ping', label: 'Ping - tjenester - Verktøy Intern API' }
+                        ]
+                    },
+                    {
+                        header: 'Ping - admin',
+                        links: [
+                        { url: 'https://admin-helsenorge-{env}.int-hn.nhn.no/proxy/skjemainternal/ping', label: 'Ping - admin - Skjema Intern API' },
+                        { url: 'https://admin-helsenorge-{env}.int-hn.nhn.no/proxy/verktoyformidleren/ping', label: 'Ping - admin - Verktøyformidler API' },
+                        { url: 'https://admin-helsenorge-{env}.int-hn.nhn.no/proxy/verktoykatalog/ping', label: 'Ping - admin - Verktøyformidler API' }
+                        ]
+                    },
+                    {
+                        header: 'Ping - ekstern',
+                        links: [
+                        { url: 'https://eksternapi-hn-{env}.int-hn.nhn.no/oppgave/swagger/', label: 'Swagger - ekstern - Oppgave Ekstern API' },
+                        { url: 'https://eksternapi-hn-{env}.int-hn.nhn.no/skjema/swagger/', label: 'Swagger - ekstern - Skjema Ekstern API' },
+                        { url: 'https://eksternapi-hn-{env}.int-hn.nhn.no/smartregister/swagger/', label: 'Swagger - ekstern - SmartRegister Ekstern API' },
+                        { url: 'https://eksternapi-hn-{env}.int-hn.nhn.no/verktoy/swagger/', label: 'Swagger - ekstern - Verktøy Ekstern API' }
+                        ]
+                    },
+                    {
+                        header: 'Swagger - direkte',
+                        links: [
+                        { url: 'http://forerrett-app.helsenorge.utvikling/swagger/', label: 'Swagger - direkte - Førerrett API' },
+                        { url: 'http://oppgave-externalapi.helsenorge.utvikling/swagger/', label: 'Swagger - direkte - Oppgave Ekstern API' },
+                        { url: 'http://oppgave.helsenorge.utvikling/swagger/', label: 'Swagger - direkte - Oppgave Intern API' },
+                        { url: 'http://skjema-externalapi.helsenorge.utvikling/swagger/', label: 'Swagger - direkte - Skjema Ekstern API' },
+                        { url: 'http://skjema.helsenorge.utvikling/swagger/', label: 'Swagger - direkte - Skjema Intern API' },
+                        { url: 'http://smartregister-eksternapi.helsenorge.utvikling/swagger/', label: 'Swagger - direkte - SmartRegister Ekstern API' },
+                        { url: 'http://smartregister.helsenorge.utvikling/swagger/', label: 'Swagger - direkte - SmartRegister Intern API' },
+                        { url: 'http://verktoy-externalapi.helsenorge.utvikling/swagger/', label: 'Swagger - direkte - Verktøy Ekstern API' },
+                        { url: 'http://verktoynetcore.helsenorge.utvikling/swagger/', label: 'Swagger - direkte - Verktøy Intern API' },
+                        { url: 'http://innbyggerverktoy.helsenorge.utvikling/swagger/', label: 'Swagger - direkte - Verktøyformidler API' },
+                        { url: 'http://verktoykatalog.helsenorge.utvikling/swagger/', label: 'Swagger - direkte - Verktøykatalog API' }
+                        ]
+                    },
+                    {
+                        header: 'Ping - direkte',
+                        links: [
+                        { url: 'http://forerrett-app.helsenorge.utvikling/ping', label: 'Ping - direkte - Førerrett API' },
+                        { url: 'http://oppgave-externalapi.helsenorge.utvikling/ping', label: 'Ping - direkte - Oppgave Ekstern API' },
+                        { url: 'http://oppgave.helsenorge.utvikling/ping', label: 'Ping - direkte - Oppgave Intern API' },
+                        { url: 'http://skjema-externalapi.helsenorge.utvikling/ping', label: 'Ping - direkte - Skjema Ekstern API' },
+                        { url: 'http://skjema.helsenorge.utvikling/ping', label: 'Ping - direkte - Skjema Intern API' },
+                        { url: 'http://smartregister-eksternapi.helsenorge.utvikling/ping', label: 'Ping - direkte - SmartRegister Ekstern API' },
+                        { url: 'http://smartregister.helsenorge.utvikling/ping', label: 'Ping - direkte - SmartRegister Intern API' },
+                        { url: 'http://verktoy-externalapi.helsenorge.utvikling/ping', label: 'Ping - direkte - Verktøy Ekstern API' },
+                        { url: 'http://verktoynetcore.helsenorge.utvikling/ping', label: 'Ping - direkte - Verktøy Intern API' },
+                        { url: 'http://innbyggerverktoy.helsenorge.utvikling/ping', label: 'Ping - direkte - Verktøyformidler API' },
+                        { url: 'http://verktoykatalog.helsenorge.utvikling/ping', label: 'Ping - direkte - Verktøykatalog API' }
+                        ]
+                    },
+                    {
+                        header: 'Health - direkte',
+                        links: [
+                        { url: 'http://forerrett-app.helsenorge.utvikling/health', label: 'Health - direkte - Førerrett API' },
+                        { url: 'http://oppgave-externalapi.helsenorge.utvikling/health', label: 'Health - direkte - Oppgave Ekstern API' },
+                        { url: 'http://oppgave.helsenorge.utvikling/health', label: 'Health - direkte - Oppgave Intern API' },
+                        { url: 'http://skjema-externalapi.helsenorge.utvikling/health', label: 'Health - direkte - Skjema Ekstern API' },
+                        { url: 'http://skjema.helsenorge.utvikling/health', label: 'Health - direkte - Skjema Intern API' },
+                        { url: 'http://smartregister-eksternapi.helsenorge.utvikling/health', label: 'Health - direkte - SmartRegister Ekstern API' },
+                        { url: 'http://smartregister.helsenorge.utvikling/health', label: 'Health - direkte - SmartRegister Intern API' },
+                        { url: 'http://verktoy-externalapi.helsenorge.utvikling/health', label: 'Health - direkte - Verktøy Ekstern API' },
+                        { url: 'http://verktoynetcore.helsenorge.utvikling/health', label: 'Health - direkte - Verktøy Intern API' },
+                        { url: 'http://innbyggerverktoy.helsenorge.utvikling/health', label: 'Health - direkte - Verktøyformidler API' },
+                        { url: 'http://verktoykatalog.helsenorge.utvikling/health', label: 'Health - direkte - Verktøykatalog API' }
+                        ]
+                    }
+                ];
+
+                linkGroups.forEach(group => {
+                    const groupElement = document.createElement('div');
+                    groupElement.className = 'link-group';
+
+                    const headerElement = document.createElement('h2');
+                    headerElement.textContent = group.header;
+                    groupElement.appendChild(headerElement);
+
+                    const ulElement = document.createElement('ul');
+
+                    group.links.forEach(linkObj => {
+                        const link = linkObj.url.replace('{env}', envName);
+                        const linkElement = document.createElement('li');
+                        linkElement.className = 'link-item';
+                        linkElement.innerHTML = `${linkObj.label}: <a href="${link}" target="_blank">${link}</a>`;
+                        ulElement.appendChild(linkElement);
+                    });
+
+                    groupElement.appendChild(ulElement);
+                    linksContainer.appendChild(groupElement);
+                });
+            }
+
+            // Funksjon for å bytte mellom lys og mørk modus
+            function toggleTheme() {
+                const body = document.body;
+                const currentTheme = body.getAttribute('data-theme');
+                if (currentTheme === 'dark') {
+                    body.setAttribute('data-theme', 'light');
+                    document.querySelector('.theme-toggle-btn').textContent = 'Bytt til mørk modus';
+                } else {
+                    body.setAttribute('data-theme', 'dark');
+                    document.querySelector('.theme-toggle-btn').textContent = 'Bytt til lys modus';
+                }
+            }
+
+            // Sett standardmodus basert på systeminnstillinger
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.body.setAttribute('data-theme', 'dark');
+                document.querySelector('.theme-toggle-btn').textContent = 'Bytt til lys modus';
+            }
+        </script>
+    </body>
+</html>
